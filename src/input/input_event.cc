@@ -1,4 +1,5 @@
 #include "config.h"
+#include <torrent/utils/log.h>
 
 #include "input_event.h"
 
@@ -23,7 +24,10 @@ InputEvent::event_read() {
   int c;
 
   while ((c = getch()) != ERR)
+{
+lt_log_print(torrent::LOG_TORRENT_WARN, "key: %d", c);
     m_slotPressed(c);
+    }
 }
 
 void

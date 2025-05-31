@@ -40,6 +40,7 @@ Download::Download(core::Download* d) :
   m_focusDisplay(false) {
 
   m_windowDownloadStatus = new WDownloadStatus(d);
+  // m_windowDownloadStatus = new WLog();
   m_windowDownloadStatus->set_bottom(true);
 
   m_uiArray[DISPLAY_MENU]          = create_menu();
@@ -168,8 +169,8 @@ Download::create_info() {
 
 void
 Download::activate(display::Frame* frame, [[maybe_unused]] bool focus) {
-  if (is_active())
-    throw torrent::internal_error("ui::Download::activate() called on an already activated object.");
+  // if (is_active())
+    // throw torrent::internal_error("ui::Download::activate() called on an already activated object.");
 
   control->input()->push_back(&m_bindings);
 
@@ -180,12 +181,14 @@ Download::activate(display::Frame* frame, [[maybe_unused]] bool focus) {
   m_windowDownloadStatus->set_active(true);
 
   activate_display_menu(DISPLAY_PEER_LIST);
+  // activate_display_menu(DISPLAY_FILE_LIST);
+  // activate_display_focus(DISPLAY_FILE_LIST);
 }
 
 void
 Download::disable() {
-  if (!is_active())
-    throw torrent::internal_error("ui::Download::disable() called on an already disabled object.");
+  // if (!is_active())
+    // throw torrent::internal_error("ui::Download::disable() called on an already disabled object.");
 
   control->input()->erase(&m_bindings);
 
@@ -199,8 +202,8 @@ Download::disable() {
 
 void
 Download::activate_display(Display displayType, bool focusDisplay) {
-  if (!is_active())
-    throw torrent::internal_error("ui::Download::activate_display(...) !is_active().");
+  // if (!is_active())
+    // throw torrent::internal_error("ui::Download::activate_display(...) !is_active().");
 
   if (displayType > DISPLAY_MAX_SIZE)
     throw torrent::internal_error("ui::Download::activate_display(...) out of bounds");
@@ -240,10 +243,13 @@ Download::activate_display(Display displayType, bool focusDisplay) {
   case DISPLAY_TRACKER_LIST:
   case DISPLAY_CHUNKS_SEEN:
   case DISPLAY_TRANSFER_LIST:
-    frame->initialize_column(2);
+    // frame->initialize_column(2);
+    frame->initialize_column(1);
 
-    m_uiArray[DISPLAY_MENU]->activate(frame->frame(0), !focusDisplay);
-    m_uiArray[displayType]->activate(frame->frame(1), focusDisplay);
+    // m_uiArray[DISPLAY_MENU]->activate(frame->frame(0), !focusDisplay);
+    // m_uiArray[DISPLAY_MENU]->activate(frame->frame(0), false);
+    // m_uiArray[displayType]->activate(frame->frame(1), focusDisplay);
+    m_uiArray[DISPLAY_FILE_LIST]->activate(frame->frame(0), true);
     break;
 
   case DISPLAY_MENU:
@@ -254,10 +260,12 @@ Download::activate_display(Display displayType, bool focusDisplay) {
   // Set title.
   switch (displayType) {
   case DISPLAY_MAX_SIZE: break;
-  default: control->ui()->window_title()->set_title(m_download->info()->name()); break;
+  // default: control->ui()->window_title()->set_title(m_download->info()->name()); break;
   }
 
   control->display()->adjust_layout();
+    // m_uiArray[DISPLAY_MENU]->disable();
+  // control->display()->adjust_layout();
 }
 
 void

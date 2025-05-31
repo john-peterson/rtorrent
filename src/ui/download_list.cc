@@ -100,6 +100,7 @@ DownloadList::unfocus_download(core::Download* d) {
 
 void
 DownloadList::activate_display(Display displayType) {
+  lt_log_print(torrent::LOG_TORRENT_WARN, "activate_display");
   if (!is_active())
     throw torrent::internal_error("ui::DownloadList::activate_display(...) !is_active().");
 
@@ -186,7 +187,7 @@ DownloadList::activate_display(Display displayType) {
                                              rpc::call_command_string("session.name"));
     break;
   case DISPLAY_LOG:
-    control->ui()->window_title()->set_title("Log");
+    control->ui()->window_title()->set_title("Logg");
     break;
   default: break;
   }
